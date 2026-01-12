@@ -3,30 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Filipe Andrade</title>
-    <link rel="icon" type="image/png" href="imagens/icons/icons8-link-96.png">
-    <link rel="stylesheet" href="style.css">
+    <title>Links | Professor & Dev</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="./img/icons/icons8-link-96.png" type="image/x-icon">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        /* --- VARIÁVEIS DE COR & CONFIG --- */
+        :root {
+            --bg-color: #0f1115; /* Preto quase grafite */
+            --card-bg: rgba(255, 255, 255, 0.03); /* Vidro */
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --accent-color: #38bdf8; /* Azul Ciano Tech */
+            --accent-glow: rgba(56, 189, 248, 0.4);
+            --gradient-tech: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+        }
+
+        /* --- RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- FUNDO TECNOLÓGICO (GRID & GLOW) --- */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            /* Padrão de Grid Sutil */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+        }
+
+        /* Glow centralizado no fundo */
+        .background-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--accent-glow);
+            filter: blur(150px);
+            border-radius: 50%;
+            top: 20%;
+            z-index: -1;
+            opacity: 0.6;
+            animation: pulseBg 6s infinite alternate;
+        }
+
+        /* --- CONTAINER PRINCIPAL --- */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 40px 24px;
+            text-align: center;
+            animation: fadeIn Up 0.8s ease-out;
+        }
+
+        /* --- PERFIL --- */
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%; /* Circular */
+            object-fit: cover;
+            border: 2px solid var(--accent-color);
+            padding: 4px; /* Espaço entre imagem e borda */
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 0 20px var(--accent-glow);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-role {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .separator {
+            width: 4px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        /* --- LISTA DE LINKS --- */
+        .links-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .link-item {
+            position: relative;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* Efeito de Icone à esquerda */
+        .btn-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .arrow-icon {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            color: var(--accent-color);
+        }
+
+        /* --- ESTADOS DE HOVER --- */
+        .link-btn:hover {
+            transform: translateY(-3px) scale(1.01);
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .link-btn:hover .arrow-icon {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* --- RODAPÉ SOCIAL --- */
+        .social-footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-link {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent-color);
+            transform: scale(1.2);
+        }
+
+        /* --- ANIMAÇÕES --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulseBg {
+            0% { opacity: 0.3; transform: scale(0.9); }
+            100% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        /* Responsividade básica garantida pelo max-width e flexbox */
+    </style>
 </head>
 <body>
-    <main>
-        <header class="glass-effect">
-            <img src="./imagens/fotoPerfil-Filipe.jpeg" alt="foto pessoal"></img>
-            <div class="about">
-                <h1>Filipe <strong>Andrade</strong></h1>
-                <p>Atualmente estudante de graduação da UFMS em Ciência da Computação, desenvolvedor web e tutor/professor de robótica.</p>
-            </div>
-            <section id="link-container">
-                <!-- Os links serão adicionados dinamicamente aqui -->
-            </section>
-            <footer>
-                <a href="https://www.linkedin.com/in/filipe-andrade-352451315?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_self"><img src="./imagens/svgs/linkedin-svgrepo-com.svg"></img></a>
-                <a href="https://www.instagram.com/andr.filipe_/" target="_self"><img src="./imagens/svgs/instagram-svgrepo-com.svg"></img></a>
-            </footer>
+
+    <div class="background-glow"></div>
+
+    <main class="container">
+        <header class="profile-wrapper">
+            <img src="./img/fotoPerfil-Filipe.jpeg" alt="Avatar Professor" class="avatar">
         </header>
+
+        <h1 class="profile-name">Filipe Andrade</h1>
         
-        
+        <div class="profile-role">
+            <span>Robótica</span>
+            <div class="separator"></div>
+            <span>Web Dev</span>
+            <div class="separator"></div>
+            <span>Pesquisador</span>
+        </div>
+
+        <ul class="links-list">
+            
+            <li class="link-item">
+                <a href="#" class="link-btn" target="_blank">
+                    <div class="btn-content">
+                        <i class="ph ph-laptop btn-icon"></i> <span>Portfólio Web - [Em Breve]</span>
+                    </div>
+                    <i class="ph ph-caret-right arrow-icon"></i>
+                </a>
+            </li>
+
+            <li class="link-item">
+                <a href="https://lattes.cnpq.br/5091983824854974" class="link-btn" target="_blank">
+                    <div class="btn-content">
+                        <i class="ph ph-graduation-cap btn-icon"></i> <span>Pesquisa Acadêmica (Lattes)</span>
+                    </div>
+                    <i class="ph ph-caret-right arrow-icon"></i>
+                </a>
+            </li>
+
+            <li class="link-item">
+                <a href="https://github.com/filipeAndr?tab=repositories" class="link-btn" target="_blank">
+                    <div class="btn-content">
+                        <i class="ph ph-code btn-icon"></i> <span>Repositórios GitHub</span>
+                    </div>
+                    <i class="ph ph-caret-right arrow-icon"></i>
+                </a>
+            </li>
+
+            <li class="link-item">
+                <a href="#" class="link-btn" target="_blank">
+                    <div class="btn-content">
+                        <i class="ph ph-robot btn-icon"></i> <span>Projetos de Robótica - [Em Breve]</span>
+                    </div>
+                    <i class="ph ph-caret-right arrow-icon"></i>
+                </a>
+            </li>
+
+            <li class="link-item">
+                <a href="https://wa.me/5567935007132?text=Olá,%20vim%20pelo%20seu%20link%20da%20bio!" class="link-btn" target="_blank">
+                    <div class="btn-content">
+                        <i class="ph ph-whatsapp-logo btn-icon"></i>
+                        <span>Entrar em Contato</span>
+                    </div>
+                    <i class="ph ph-caret-right arrow-icon"></i>
+                </a>
+            </li>
+
+        </ul>
+
+        <footer class="social-footer">
+            <a href="https://www.linkedin.com/in/filipe-andrade-352451315?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link"><i class="ph ph-linkedin-logo"></i></a>
+            <a href="https://github.com/filipeAndr" class="social-link"><i class="ph ph-github-logo"></i></a>
+            <a href="https://www.instagram.com/andr.filipe_/" class="social-link"><i class="ph ph-instagram-logo"></i></a>
+        </footer>
     </main>
 
-    <script src="script.js"></script>
 </body>
 </html>
